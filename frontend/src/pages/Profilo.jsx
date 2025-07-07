@@ -10,6 +10,11 @@ function Profilo({ user, onUpdate }) {
         confirmNewPassword: '',
     });
 
+    // Stato toggle per ogni campo password
+    const [showOldPassword, setShowOldPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+
     const [message, setMessage] = useState('');
 
     const handleChange = (e) => {
@@ -20,7 +25,6 @@ function Profilo({ user, onUpdate }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validazione lato client
         if (formData.newPassword || formData.confirmNewPassword) {
             if (formData.newPassword !== formData.confirmNewPassword) {
                 setMessage('Le nuove password non corrispondono.');
@@ -36,7 +40,6 @@ function Profilo({ user, onUpdate }) {
             }
         }
 
-        // Prepara dati da inviare (non inviare campi password vuoti)
         const dataToSend = {
             nome: formData.nome,
         };
@@ -94,33 +97,67 @@ function Profilo({ user, onUpdate }) {
                     />
                 </label>
                 <hr />
+
                 <label>
                     Vecchia password:
-                    <input
-                        type="password"
-                        name="oldPassword"
-                        value={formData.oldPassword}
-                        onChange={handleChange}
-                    />
+                    <div className="password-wrapper">
+                        <input
+                            type={showOldPassword ? 'text' : 'password'}
+                            name="oldPassword"
+                            value={formData.oldPassword}
+                            onChange={handleChange}
+                        />
+                        <button
+                            type="button"
+                            className="toggle-password"
+                            onClick={() => setShowOldPassword(!showOldPassword)}
+                            aria-label={showOldPassword ? 'Nascondi password' : 'Mostra password'}
+                        >
+                            {showOldPassword ? 'X' : 'O'}
+                        </button>
+                    </div>
                 </label>
+
                 <label>
                     Nuova password:
-                    <input
-                        type="password"
-                        name="newPassword"
-                        value={formData.newPassword}
-                        onChange={handleChange}
-                    />
+                    <div className="password-wrapper">
+                        <input
+                            type={showNewPassword ? 'text' : 'password'}
+                            name="newPassword"
+                            value={formData.newPassword}
+                            onChange={handleChange}
+                        />
+                        <button
+                            type="button"
+                            className="toggle-password"
+                            onClick={() => setShowNewPassword(!showNewPassword)}
+                            aria-label={showNewPassword ? 'Nascondi password' : 'Mostra password'}
+                        >
+                            {showNewPassword ? 'X' : 'O'}
+                        </button>
+                    </div>
                 </label>
+
                 <label>
                     Conferma nuova password:
-                    <input
-                        type="password"
-                        name="confirmNewPassword"
-                        value={formData.confirmNewPassword}
-                        onChange={handleChange}
-                    />
+                    <div className="password-wrapper">
+                        <input
+                            type={showConfirmNewPassword ? 'text' : 'password'}
+                            name="confirmNewPassword"
+                            value={formData.confirmNewPassword}
+                            onChange={handleChange}
+                        />
+                        <button
+                            type="button"
+                            className="toggle-password"
+                            onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+                            aria-label={showConfirmNewPassword ? 'Nascondi password' : 'Mostra password'}
+                        >
+                            {showConfirmNewPassword ? 'X' : 'O'}
+                        </button>
+                    </div>
                 </label>
+
                 <button type="submit">Salva modifiche</button>
             </form>
             {message && <p id="profilo-message">{message}</p>}
