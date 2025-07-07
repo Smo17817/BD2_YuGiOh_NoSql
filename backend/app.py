@@ -2,21 +2,30 @@ from flask import Flask, request, jsonify
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 from dotenv import load_dotenv
-from bson.objectid import ObjectId  # necessario per usare ObjectId con PyMongo
+from bson.objectid import ObjectId
 import os
+import math
 
 load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
-
 print("MONGO_URI =", app.config["MONGO_URI"])
 
 mongo = PyMongo(app)
 print("Mongo DB:", mongo.db)
 
-# Ottiene un certo numero di carte
+def clean_nan(obj):
+    if isinstance(obj, dict):
+        return {k: clean_nan(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [clean_nan(i) for i in obj]
+    elif isinstance(obj, float) and math.isnan(obj):
+        return None
+    else:
+        return obj
+
 @app.route("/carte", methods=["GET"])
 def get_carte():
     limit = int(request.args.get("limit", 0))
@@ -24,7 +33,8 @@ def get_carte():
     if limit > 0:
         query = query.limit(limit)
     cartes = list(query)
-    return jsonify([{**c, "_id": str(c["_id"])} for c in cartes])
+    cartes_clean = [clean_nan({**c, "_id": str(c["_id"])}) for c in cartes]
+    return jsonify(cartes_clean)
 
 @app.route("/collezionisti", methods=["POST"])
 def crea_collezionista():
@@ -50,6 +60,8 @@ def get_collezionista(id):
         }}
     ])
     col = next(agg, None)
+    if col is None:
+        return jsonify({"error": "Collezionista non trovato"}), 404
     col["_id"] = str(col["_id"])
     return jsonify(col)
 
