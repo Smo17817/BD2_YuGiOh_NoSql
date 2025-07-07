@@ -10,11 +10,20 @@ app = Flask(__name__)
 CORS(app)
 
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
-mongo = PyMongo(app)
 
+print("MONGO_URI =", app.config["MONGO_URI"])
+
+mongo = PyMongo(app)
+print("Mongo DB:", mongo.db)
+
+# Ottiene un certo numero di carte
 @app.route("/carte", methods=["GET"])
 def get_carte():
-    cartes = mongo.db.carte.find()
+    limit = int(request.args.get("limit", 0))
+    query = mongo.db.carte.find()
+    if limit > 0:
+        query = query.limit(limit)
+    cartes = list(query)
     return jsonify([{**c, "_id": str(c["_id"])} for c in cartes])
 
 @app.route("/collezionisti", methods=["POST"])

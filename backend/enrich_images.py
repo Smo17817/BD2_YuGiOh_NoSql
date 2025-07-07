@@ -1,7 +1,11 @@
 import requests
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
 
-client = MongoClient("<MONGO_URI>")
+load_dotenv()
+
+client = MongoClient(os.getenv("MONGO_URI"))
 db = client['ygo_db']
 for card in db.carte.find():
     name = card.get('name')
