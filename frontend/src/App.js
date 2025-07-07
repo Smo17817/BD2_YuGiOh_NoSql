@@ -5,6 +5,8 @@ import Catalogo from './pages/Catalogo';
 import Navbar from './pages/Navbar';
 import Footer from './pages/Footer';
 import Carta from './pages/Carta';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/catalogo" element={<Catalogo />} />
           <Route path="/carta/:id" element={<Carta />} />
+          <Route path="/login" element={<Login />} />   
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </div>
       <Footer />

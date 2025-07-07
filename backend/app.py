@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from bson.objectid import ObjectId
 import os
 import math
+from flask_bcrypt import Bcrypt
+import re
 
 load_dotenv()
 app = Flask(__name__)
@@ -89,6 +91,45 @@ def get_collezionista(id):
 @app.route("/")
 def home():
     return "Backend Yugioh attivo!"
+
+def is_valid_email(email):
+    return re.match(r"[^@]+@[^@]+\.[^@]+", email)
+
+@app.route("/signup", methods=["POST"])
+def signup():
+    data = request.json
+    nome = data.get("nome")
+    email = data.get("email")
+    password = data.get("password")
+
+    if not nome or not email or not password:
+        return jsonify({"error": "Tutti i campi sono obbligatori"}), 400
+    if not is_valid_email(email):
+        return jsonify({"error": "Email non valida"}), 400
+    if len(password) < 8:
+        return jsonify({"error": "Password deve essere lunga almeno 8 caratteri"}), 400
+    if mongo.db.users.find_one({"email": email}):
+        return jsonify({"error": "Email già registrata"}), 400
+
+    pw_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+    mongo.db.users.insert_one({"nome": nome, "email": email, "password": pw_hash})
+    return jsonify({"message": "Utente registrato con successo"}), 201
+
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.json
+    email = data.get("email")
+    password = data.get("password")
+
+    if not email or not password:
+        return jsonify({"error": "Email e password obbligatorie"}), 400
+
+    user = mongo.db.users.find_one({"email": email})
+    if user and bcrypt.check_password_hash(user["password"], password):
+        # Qui puoi generare e restituire un token JWT per sessioni sicure
+        return jsonify({"message": "Login effettuato", "user": {"nome": user["nome"], "email": user["email"]}}), 200
+    return jsonify({"error": "Credenziali non valide"}), 401
+
 
 if __name__ == "__main__":
     app.run(debug=True)
