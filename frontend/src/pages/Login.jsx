@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../style/login.css';
 
 function Login({ onLogin }) {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -18,8 +20,8 @@ function Login({ onLogin }) {
             });
             const data = await res.json();
             if (res.ok) {
-                setMessage('Login effettuato!');
-                onLogin(data);
+                onLogin(data.user);      // setta utente nel genitore
+                navigate("/"); // reindirizza alla home
             } else {
                 setMessage(data.error || 'Credenziali non valide');
             }

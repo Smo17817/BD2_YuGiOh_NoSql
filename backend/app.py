@@ -10,6 +10,7 @@ import re
 
 load_dotenv()
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 CORS(app)
 
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
@@ -126,10 +127,8 @@ def login():
 
     user = mongo.db.users.find_one({"email": email})
     if user and bcrypt.check_password_hash(user["password"], password):
-        # Qui puoi generare e restituire un token JWT per sessioni sicure
         return jsonify({"message": "Login effettuato", "user": {"nome": user["nome"], "email": user["email"]}}), 200
     return jsonify({"error": "Credenziali non valide"}), 401
-
 
 if __name__ == "__main__":
     app.run(debug=True)

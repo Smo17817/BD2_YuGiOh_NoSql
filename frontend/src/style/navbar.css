@@ -1,16 +1,36 @@
 .navbar {
     background-color: #eee;
-    padding: 1rem;
+    padding: 1rem 2rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-links a {
-    margin-right: 1.5rem;
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-links a,
+.navbar-user-actions a,
+.navbar-user-actions button {
+    margin-left: 1.2rem;
     text-decoration: none;
     color: #333;
     font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.2s;
 }
 
-.navbar-links a:hover {
+.navbar-links a:hover,
+.navbar-user-actions a:hover,
+.navbar-user-actions button:hover {
     color: #007bff;
+}
+
+.navbar-user {
+    font-weight: 500;
+    margin-left: 1.2rem;
 }
