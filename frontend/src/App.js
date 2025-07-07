@@ -8,6 +8,7 @@ import Carta from './pages/Carta';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profilo from './pages/Profilo';
+import Preferiti from './pages/Preferiti';
 
 function App() {
   // Inizializza lo stato leggendo da localStorage (una sola volta)
@@ -42,10 +43,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/catalogo" element={<Catalogo />} />
-          <Route path="/carta/:id" element={<Carta />} />
+          <Route path="/carta/:id" element={<Carta user={user} />} />
           <Route path="/login" element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/" />} /> 
           <Route path="/signup" element={<Signup />} />
           <Route path="/profilo" element={user ? <Profilo user={user} onUpdate={setUser} /> : <Navigate to="/login" />} />
+          <Route path="/preferiti" element={user ? <Preferiti user={user} /> : <Navigate to="/login" />} />       
         </Routes>
       </div>
       <Footer />

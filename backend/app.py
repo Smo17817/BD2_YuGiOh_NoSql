@@ -39,25 +39,23 @@ def get_carte():
     cartes_clean = [clean_nan({**c, "_id": str(c["_id"])}) for c in cartes]
     return jsonify(cartes_clean)
 
-# recupera le 10 carte più popolari
 @app.route("/carte/upvotes", methods=["GET"])
 def get_cards_by_upvotes():
-    limit = int(request.args.get("limit", 10))  # default 10 carte
-    query = mongo.db.carte.find().sort("upvotes", -1)  # -1 = decrescente
+    limit = int(request.args.get("limit", 10))
+    query = mongo.db.carte.find().sort("upvotes", -1)
     if limit > 0:
         query = query.limit(limit)
     cartes = list(query)
     cartes_clean = [clean_nan({**c, "_id": str(c["_id"])}) for c in cartes]
     return jsonify(cartes_clean)
 
-# recupera una carta dato un id
 @app.route("/carta/<id>", methods=["GET"])
 def get_carta_by_id(id):
     carta = mongo.db.carte.find_one({"_id": ObjectId(id)})
     if not carta:
         return jsonify({"error": "Carta non trovata"}), 404
     carta["_id"] = str(carta["_id"])
-    carta = clean_nan(carta) 
+    carta = clean_nan(carta)
     return jsonify(carta)
 
 @app.route("/collezionisti", methods=["POST"])
@@ -113,7 +111,12 @@ def signup():
         return jsonify({"error": "Email già registrata"}), 400
 
     pw_hash = bcrypt.generate_password_hash(password).decode('utf-8')
-    mongo.db.users.insert_one({"nome": nome, "email": email, "password": pw_hash})
+    mongo.db.users.insert_one({
+        "nome": nome,
+        "email": email,
+        "password": pw_hash,
+        "preferiti": []  # campo aggiunto per i preferiti
+    })
     return jsonify({"message": "Utente registrato con successo"}), 201
 
 @app.route("/login", methods=["POST"])
@@ -130,8 +133,6 @@ def login():
         return jsonify({"message": "Login effettuato", "user": {"nome": user["nome"], "email": user["email"]}}), 200
     return jsonify({"error": "Credenziali non valide"}), 401
 
-from flask_bcrypt import check_password_hash
-
 @app.route("/utente/<email>", methods=["PUT"])
 def update_utente(email):
     data = request.json
@@ -142,11 +143,9 @@ def update_utente(email):
 
     update_fields = {}
 
-    # Cambia nome se presente
     if "nome" in data and data["nome"] != user.get("nome"):
         update_fields["nome"] = data["nome"]
 
-    # Cambia password se richiesto
     if "oldPassword" in data and "newPassword" in data:
         old_pw = data["oldPassword"]
         new_pw = data["newPassword"]
@@ -159,11 +158,51 @@ def update_utente(email):
 
     if update_fields:
         mongo.db.users.update_one({"email": email}, {"$set": update_fields})
-        updated_user = mongo.db.users.find_one({"email": email}, {"password": 0})  # escludi password
+        updated_user = mongo.db.users.find_one({"email": email}, {"password": 0})
         updated_user["_id"] = str(updated_user["_id"])
         return jsonify({"message": "Profilo aggiornato", "updatedUser": updated_user})
 
     return jsonify({"error": "Nessun dato da aggiornare"}), 400
+
+### Gestione dei preferiti ###
+
+@app.route("/preferiti/<email>", methods=["GET"])
+def get_preferiti(email):
+    print(f"Email ricevuta (raw): {email}")
+    user = mongo.db.users.find_one({"email": email})
+    if not user:
+        print("Utente non trovato")
+        return jsonify({"error": "Utente non trovato"}), 404
+    preferiti = user.get("preferiti", [])
+    preferiti = [str(p) for p in preferiti]
+    return jsonify({"preferiti": preferiti})
+
+
+@app.route("/preferiti/<email>", methods=["POST"])
+def aggiungi_preferito(email):
+    data = request.json
+    id_carta = data.get("id_carta")
+    if not id_carta:
+        return jsonify({"error": "id_carta richiesto"}), 400
+
+    mongo.db.users.update_one(
+        {"email": email},
+        {"$addToSet": {"preferiti": ObjectId(id_carta)}}  # $addToSet evita duplicati
+    )
+    return jsonify({"message": "Carta aggiunta ai preferiti"}), 200
+
+@app.route("/preferiti/<email>", methods=["DELETE"])
+def rimuovi_preferito(email):
+    data = request.json
+    id_carta = data.get("id_carta")
+    if not id_carta:
+        return jsonify({"error": "id_carta richiesto"}), 400
+
+    mongo.db.users.update_one(
+        {"email": email},
+        {"$pull": {"preferiti": ObjectId(id_carta)}}
+    )
+    return jsonify({"message": "Carta rimossa dai preferiti"}), 200
 
 if __name__ == "__main__":
     app.run(debug=True)

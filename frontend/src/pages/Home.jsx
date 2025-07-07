@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import '../style/catalogo.css';
 
 function Home() {
     const [carte, setCarte] = useState([]);
@@ -17,21 +19,24 @@ function Home() {
         .catch(console.error);
     }, []);
 
+    if (carte.length === 0) {
+        return <p>Non ci sono carte in evidenza al momento.</p>;
+    }
+
     return (
-        <div>
+        <div className="catalogo-container">
         <h1>Carte in evidenza</h1>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
             {carte.map(carta => (
-            <div key={carta._id} style={{ border: '1px solid #ccc', padding: '10px', width: '150px' }}>
+            <Link key={carta._id} to={`/carta/${carta._id}`} className="card-link">
+                <div className="card">
                 <h3>{cleanValue(carta.name) || cleanValue(carta.nome) || 'Carta'}</h3>
-                {carta.image_url && <img src={carta.image_url} alt={cleanValue(carta.name)} style={{ width: '100%' }} />}
-                
-                {/* Esempio di campi numerici con gestione NaN */}
+                {carta.image_url && <img src={carta.image_url} alt={cleanValue(carta.name)} />}
                 <p>ATK: {cleanValue(carta.atk)}</p>
                 <p>DEF: {cleanValue(carta.def)}</p>
-                <p>Level: {cleanValue(carta.level)}</p>
-                <p>Upvotes: {cleanValue(carta.upvotes)}</p>
-            </div>
+                <p>Livello: {cleanValue(carta.level)}</p>
+                </div>
+            </Link>
             ))}
         </div>
         </div>
