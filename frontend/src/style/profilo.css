@@ -1,0 +1,78 @@
+#profilo-container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#profilo-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#profilo-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+#profilo-container label {
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+}
+
+/* Stile per text, email e password input */
+#profilo-container input[type="text"],
+#profilo-container input[type="email"],
+#profilo-container input[type="password"] {
+    margin-top: 6px;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+#profilo-container input[type="text"]:focus,
+#profilo-container input[type="email"]:focus,
+#profilo-container input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+#profilo-container input[disabled] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    color: #555;
+}
+
+#profilo-container button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 15px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+#profilo-container button:hover {
+    background-color: #0056b3;
+}
+
+#profilo-message {
+    margin-top: 15px;
+    text-align: center;
+    color: #28a745; /* verde per successo */
+    font-weight: 600;
+}

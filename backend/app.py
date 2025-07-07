@@ -130,5 +130,40 @@ def login():
         return jsonify({"message": "Login effettuato", "user": {"nome": user["nome"], "email": user["email"]}}), 200
     return jsonify({"error": "Credenziali non valide"}), 401
 
+from flask_bcrypt import check_password_hash
+
+@app.route("/utente/<email>", methods=["PUT"])
+def update_utente(email):
+    data = request.json
+    user = mongo.db.users.find_one({"email": email})
+
+    if not user:
+        return jsonify({"error": "Utente non trovato"}), 404
+
+    update_fields = {}
+
+    # Cambia nome se presente
+    if "nome" in data and data["nome"] != user.get("nome"):
+        update_fields["nome"] = data["nome"]
+
+    # Cambia password se richiesto
+    if "oldPassword" in data and "newPassword" in data:
+        old_pw = data["oldPassword"]
+        new_pw = data["newPassword"]
+        if not bcrypt.check_password_hash(user["password"], old_pw):
+            return jsonify({"error": "Vecchia password errata"}), 400
+        if len(new_pw) < 8:
+            return jsonify({"error": "La nuova password deve essere lunga almeno 8 caratteri"}), 400
+        new_pw_hash = bcrypt.generate_password_hash(new_pw).decode('utf-8')
+        update_fields["password"] = new_pw_hash
+
+    if update_fields:
+        mongo.db.users.update_one({"email": email}, {"$set": update_fields})
+        updated_user = mongo.db.users.find_one({"email": email}, {"password": 0})  # escludi password
+        updated_user["_id"] = str(updated_user["_id"])
+        return jsonify({"message": "Profilo aggiornato", "updatedUser": updated_user})
+
+    return jsonify({"error": "Nessun dato da aggiornare"}), 400
+
 if __name__ == "__main__":
     app.run(debug=True)

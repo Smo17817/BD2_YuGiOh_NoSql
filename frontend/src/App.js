@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Catalogo from './pages/Catalogo';
@@ -7,16 +7,32 @@ import Footer from './pages/Footer';
 import Carta from './pages/Carta';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Profilo from './pages/Profilo';
 
 function App() {
-  const [user, setUser] = useState(null);
+  // Inizializza lo stato leggendo da localStorage (una sola volta)
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  // Quando l'utente cambia, aggiorna localStorage
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [user]);
 
   const handleLogin = (userData) => {
     setUser(userData);
+    // localStorage aggiornato automaticamente dall'useEffect
   };
 
   const handleLogout = () => {
     setUser(null);
+    // localStorage rimosso automaticamente dall'useEffect
   };
 
   return (
@@ -29,6 +45,7 @@ function App() {
           <Route path="/carta/:id" element={<Carta />} />
           <Route path="/login" element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/" />} /> 
           <Route path="/signup" element={<Signup />} />
+          <Route path="/profilo" element={user ? <Profilo user={user} onUpdate={setUser} /> : <Navigate to="/login" />} />
         </Routes>
       </div>
       <Footer />
