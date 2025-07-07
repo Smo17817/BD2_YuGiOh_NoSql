@@ -36,7 +36,7 @@ def get_carte():
     cartes_clean = [clean_nan({**c, "_id": str(c["_id"])}) for c in cartes]
     return jsonify(cartes_clean)
 
-# rescupera le 10 carte più popolari
+# recupera le 10 carte più popolari
 @app.route("/carte/upvotes", methods=["GET"])
 def get_cards_by_upvotes():
     limit = int(request.args.get("limit", 10))  # default 10 carte
@@ -47,6 +47,15 @@ def get_cards_by_upvotes():
     cartes_clean = [clean_nan({**c, "_id": str(c["_id"])}) for c in cartes]
     return jsonify(cartes_clean)
 
+# recupera una carta dato un id
+@app.route("/carta/<id>", methods=["GET"])
+def get_carta_by_id(id):
+    carta = mongo.db.carte.find_one({"_id": ObjectId(id)})
+    if not carta:
+        return jsonify({"error": "Carta non trovata"}), 404
+    carta["_id"] = str(carta["_id"])
+    carta = clean_nan(carta) 
+    return jsonify(carta)
 
 @app.route("/collezionisti", methods=["POST"])
 def crea_collezionista():

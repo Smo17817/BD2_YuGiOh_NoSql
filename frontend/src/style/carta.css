@@ -1,0 +1,35 @@
+.carta-container {
+  max-width: 700px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  padding: 10px;
+}
+
+.carta-content {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start; /* allinea in alto */
+}
+
+.carta-image {
+  width: 300px;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0; /* non si riduce */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.carta-info {
+  flex: 1; /* prende lo spazio rimanente */
+}
+
+.carta-desc {
+  background-color: #f9f9f9;
+  border-left: 4px solid #666;
+  padding: 10px 15px;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  margin-top: 10px;
+}

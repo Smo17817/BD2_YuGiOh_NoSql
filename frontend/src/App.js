@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Catalogo from './pages/Catalogo';
 import Navbar from './pages/Navbar';
 import Footer from './pages/Footer';
+import Carta from './pages/Carta';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/catalogo" element={<Catalogo />} />
+          <Route path="/carta/:id" element={<Carta />} />
         </Routes>
       </div>
       <Footer />

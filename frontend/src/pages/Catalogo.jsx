@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../style/catalogo.css';
 
 const PER_PAGE = 10;
@@ -99,15 +100,17 @@ function Catalogo() {
             {/* CARDS */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                 {paginated.map(c => (
-                <div key={c._id} className="card">
-                    <h3>{c.name}</h3>
-                    {c.image_url && <img src={c.image_url} alt={c.name} />}
-                    <p>Tipo: {c.type}</p>
-                    {c.attribute && <p>Attributo: {c.attribute}</p>}
-                    {c.level && <p>Livello: {c.level}</p>}
-                    {c.atk && <p>ATK: {c.atk}</p>}
-                    {c.def && <p>DEF: {c.def}</p>}
-                </div>
+                    <Link key={c._id} to={`/carta/${c._id}`} className="card-link">
+                        <div className="card">
+                        <h3>{c.name}</h3>
+                        {c.image_url && <img src={c.image_url} alt={c.name} />}
+                        <p>Tipo: {c.type}</p>
+                        {c.attribute && <p>Attributo: {c.attribute}</p>}
+                        {c.level && <p>Livello: {c.level}</p>}
+                        {c.atk && <p>ATK: {c.atk}</p>}
+                        {c.def && <p>DEF: {c.def}</p>}
+                        </div>
+                    </Link>
                 ))}
             </div>
 
