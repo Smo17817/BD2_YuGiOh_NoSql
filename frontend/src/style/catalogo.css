@@ -1,97 +1,131 @@
-/* Container principale */
-.catalogo-container {
-    padding: 20px;
-    font-family: sans-serif;
+/* Card - Dark Theme */
+.card {
+    height: 470px; /* altezza aumentata */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 15px;
+    border-radius: 10px;
+    background: #1c1c1c;
+    color: #f0f0f0;
+    border: 1px solid #2a2a2a;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 14px rgba(255, 215, 0, 0.2); /* effetto dorato soft */
+}
+
+.card img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+/* Titolo carta */
+.card h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #f0f0f0;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    }
+
+/* Testi descrittivi (tipo, attributo ecc) */
+.card p {
+    margin: 2px 0;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Link che contiene la card */
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 220px; /* leggermente più larga per bilanciare */
+}
+
+/* Hover sul link per un piccolo effetto */
+.card-link:hover .card {
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.25);
+    transform: scale(1.02);
 }
 
 /* Filtri */
+
+.toggle-filters-btn {
+    margin: 20px auto;
+    background: #2b2b2b;
+    color: #f0f0f0;
+    font-weight: 600;
+    border: 1px solid #444;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background 0.2s;
+}
+
+.toggle-filters-btn:hover {
+    background: #3b3b3b;
+}
+
 .catalogo-filters {
+    margin: 0 0 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: #1e1e1e;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.catalogo-filters .filter-row {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    margin-bottom: 20px;
-    align-items: center;
-    background: linear-gradient(90deg, #fafafa, #f0f4f7);
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-.catalogo-filters .filter-group {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.9rem;
-}
-
-.catalogo-filters label {
-    margin-bottom: 5px;
-    color: #555;
 }
 
 .catalogo-filters input,
 .catalogo-filters select {
-    padding: 8px 12px;
-    border: 1px solid #bbb;
+    flex: 1;
+    min-width: 120px;
+    background: #2b2b2b;
+    color: #f0f0f0;
+    border: 1px solid #444;
     border-radius: 4px;
-    background: #fff;
+    padding: 6px 10px;
     font-size: 0.9rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .catalogo-filters input:focus,
 .catalogo-filters select:focus {
+    border-color: #ffd700;
+    box-shadow: 0 0 4px rgba(255,215,0,0.3);
     outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 4px rgba(0,123,255,0.2);
 }
 
-.catalogo-filters button.reset-filters {
-    padding: 8px 14px;
-    border: none;
-    background: #ececec;
-    color: #333;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s;
+/* Container cards - usa flex wrap con gap */
+.catalogo-container > div:nth-of-type(2) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
 }
-
-.catalogo-filters button.reset-filters:hover {
-    background: #d4d4d4;
-}
-
-
-/* Card */
-.card {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background: #fff;
-    padding: 15px;
-    width: 180px;
-    text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-}
-.card img {
-    width: 100%;
-    height: auto;
-    border-radius: 4px;
-    margin-bottom: 10px;
-}
-
-.card-link {
-    text-decoration: none;
-    color: inherit;
-}
-
-.card-link:hover .card {
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    transform: scale(1.01);
-    transition: all 0.2s ease-in-out;
-}
-
 
 /* Paginazione */
 .pagination {
@@ -105,29 +139,51 @@
 
 .page-btn {
     padding: 8px 12px;
-    border: 1px solid #007bff;
-    background: #fff;
-    color: #007bff;
+    border: 1px solid #ffcc00;  /* bordo dorato */
+    background: #1c1c1c;         /* sfondo scuro */
+    color: #ffcc00;              /* testo dorato */
     border-radius: 4px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, color 0.2s;
+    min-width: 38px;
+    text-align: center;
+    font-weight: 600;
 }
+
 .page-btn:hover:not(.active):not(:disabled) {
-    background: #e7f1ff;
-}
-.page-btn.active {
-    background: #007bff;
+    background: #333300;         /* dorato molto scuro */
     color: #fff;
 }
+
+.page-btn.active {
+    background: #ffcc00;         /* sfondo dorato */
+    color: #1c1c1c;              /* testo scuro */
+    cursor: default;
+    font-weight: 700;
+}
+
 .page-btn:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
+    color: #777;
+    border-color: #555;
 }
 
 /* Input 'Vai a pagina' */
 .pagination input[type="number"] {
     padding: 6px 10px;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid #444;      /* bordo scuro */
+    background: #2a2a2a;         /* sfondo scuro */
+    color: #f0e68c;              /* testo giallo pallido */
     width: 60px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
+
+.pagination input[type="number"]:focus {
+    border-color: #ffcc00;
+    box-shadow: 0 0 6px rgba(255, 204, 0, 0.6);
+    outline: none;
+}
+

@@ -8,6 +8,7 @@ const PAGE_GROUP_SIZE = 5;
 function Catalogo() {
     const [carte, setCarte] = useState([]);
     const [filtrate, setFiltrate] = useState([]);
+    const [showFilters, setShowFilters] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
 
@@ -75,25 +76,36 @@ function Catalogo() {
         <h1>Catalogo Carte</h1>
 
         {/* FILTRI */}
-        <div className="catalogo-filters">
-            <input type="text" placeholder="Cerca per nome" value={search} onChange={e => setSearch(e.target.value)} />
-            <select value={type} onChange={e => setType(e.target.value)}>
-            <option value="">Tutti i tipi</option>
-            {uniqueTypes.map(t => <option key={t} value={t}>{t}</option>)}
-            </select>
-            <select value={attribute} onChange={e => setAttribute(e.target.value)}>
-            <option value="">Tutti gli attributi</option>
-            {uniqueAttributes.map(a => <option key={a} value={a}>{a}</option>)}
-            </select>
-            <select value={level} onChange={e => setLevel(e.target.value)}>
-            <option value="">Qualsiasi livello</option>
-            {uniqueLevels.map(l => <option key={l} value={l}>{l}</option>)}
-            </select>
-            <input type="number" placeholder="Min ATK" value={minAtk} onChange={e => setMinAtk(e.target.value)} style={{ width: '80px' }} />
-            <input type="number" placeholder="Max ATK" value={maxAtk} onChange={e => setMaxAtk(e.target.value)} style={{ width: '80px' }} />
-            <input type="number" placeholder="Min DEF" value={minDef} onChange={e => setMinDef(e.target.value)} style={{ width: '80px' }} />
-            <input type="number" placeholder="Max DEF" value={maxDef} onChange={e => setMaxDef(e.target.value)} style={{ width: '80px' }} />
-        </div>
+        <button className="toggle-filters-btn" onClick={() => setShowFilters(!showFilters)}>
+            {showFilters ? 'Nascondi Filtri ▲' : 'Mostra Filtri ▼'}
+        </button>
+
+        {showFilters && (
+            <div className="catalogo-filters">
+                <div className="filter-row">
+                    <input type="text" placeholder="Cerca per nome" value={search} onChange={e => setSearch(e.target.value)} />
+                    <select value={type} onChange={e => setType(e.target.value)}>
+                        <option value="">Tutti i tipi</option>
+                        {uniqueTypes.map(t => <option key={t} value={t}>{t}</option>)}
+                    </select>
+                    <select value={attribute} onChange={e => setAttribute(e.target.value)}>
+                        <option value="">Tutti gli attributi</option>
+                        {uniqueAttributes.map(a => <option key={a} value={a}>{a}</option>)}
+                    </select>
+                    <select value={level} onChange={e => setLevel(e.target.value)}>
+                        <option value="">Qualsiasi livello</option>
+                        {uniqueLevels.map(l => <option key={l} value={l}>{l}</option>)}
+                    </select>
+                </div>
+
+                <div className="filter-row">
+                    <input type="number" placeholder="Min ATK" value={minAtk} onChange={e => setMinAtk(e.target.value)} />
+                    <input type="number" placeholder="Max ATK" value={maxAtk} onChange={e => setMaxAtk(e.target.value)} />
+                    <input type="number" placeholder="Min DEF" value={minDef} onChange={e => setMinDef(e.target.value)} />
+                    <input type="number" placeholder="Max DEF" value={maxDef} onChange={e => setMaxDef(e.target.value)} />
+                </div>
+            </div>
+        )}
 
         {loading ? <p>Caricamento...</p> : (
             <>

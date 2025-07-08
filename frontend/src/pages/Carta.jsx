@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import '../style/carta.css';
 
@@ -11,6 +11,35 @@ function Carta({ user }) {
     const [errorPreferiti, setErrorPreferiti] = useState(null);
 
     const userEmail = user?.email || null;
+
+    const imageRef = useRef(null);
+
+    function handleMouseMove(e) {
+        const card = imageRef.current;
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        // Oscillazione aumentata
+        const rotateX = -(y - centerY) / 5; 
+        const rotateY = (x - centerX) / 5;
+
+        // Ombra dinamica che segue il mouse
+        const shadowX = -(x - centerX) / 10;
+        const shadowY = -(y - centerY) / 10;
+
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        card.style.boxShadow = `${shadowX}px ${shadowY}px 30px rgba(0, 0, 0, 0.5)`;
+    }
+
+    function handleMouseLeave() {
+        const card = imageRef.current;
+        card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        card.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
+    }
 
     useEffect(() => {
         setLoading(true);
@@ -88,7 +117,14 @@ function Carta({ user }) {
             <h1>{carta.name}</h1>
             <div className="carta-content">
                 {carta.image_url && (
-                    <img src={carta.image_url} alt={carta.name} className="carta-image" />
+                    <img
+                        ref={imageRef}
+                        src={carta.image_url}
+                        alt={carta.name}
+                        className="carta-image"
+                        onMouseMove={handleMouseMove}
+                        onMouseLeave={handleMouseLeave}
+                    />
                 )}
                 <div className="carta-info">
                     <p>Tipo: {carta.type || '-'}</p>

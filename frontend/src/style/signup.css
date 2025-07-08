@@ -2,16 +2,16 @@
     max-width: 400px;
     margin: 40px auto;
     padding: 30px;
-    background-color: #f9f9f9;
+    background-color: #1c1c1c; /* sfondo scuro */
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #f0e68c; /* testo giallo pallido */
 }
 
 #signup-container h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    color: #ffcc00; /* titolo dorato */
 }
 
 #signup-container form {
@@ -25,23 +25,33 @@
 #signup-confirm-password {
     margin-bottom: 15px;
     padding: 12px 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #555; /* bordo scuro */
     border-radius: 5px;
     font-size: 1rem;
-    transition: border-color 0.3s;
+    background-color: #2a2a2a; /* input scuri */
+    color: #f0e68c; /* testo giallo pallido */
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#signup-name::placeholder,
+#signup-email::placeholder,
+#signup-password::placeholder,
+#signup-confirm-password::placeholder {
+    color: #999;
 }
 
 #signup-name:focus,
 #signup-email:focus,
 #signup-password:focus,
 #signup-confirm-password:focus {
-    border-color: #007bff;
+    border-color: #ffcc00; /* bordo dorato */
     outline: none;
+    box-shadow: 0 0 6px rgba(255, 204, 0, 0.7);
 }
 
 #signup-submit {
-    background-color: #007bff;
-    color: white;
+    background-color: #ffcc00; /* bottone dorato */
+    color: #1c1c1c; /* testo scuro */
     padding: 12px 15px;
     font-size: 1.1rem;
     border: none;
@@ -52,13 +62,13 @@
 }
 
 #signup-submit:hover {
-    background-color: #0056b3;
+    background-color: #e6b800; /* dorato scuro */
 }
 
 #signup-message {
     margin-top: 15px;
     text-align: center;
-    color: #d9534f; /* rosso per errori */
+    color: #d9534f; /* rosso errori */
     font-weight: 600;
 }
 
@@ -66,11 +76,11 @@
     margin-top: 20px;
     text-align: center;
     font-size: 14px;
-    color: #555;
+    color: #ccc; /* testo più chiaro */
 }
 
 #login-link a {
-    color: #007bff;
+    color: #ffcc00; /* link dorato */
     text-decoration: none;
     font-weight: 600;
 }
@@ -88,6 +98,18 @@
 .password-wrapper input {
     flex: 1;
     padding-right: 40px; /* spazio per il bottone */
+    background-color: #2a2a2a;
+    color: #f0e68c;
+    border: 1px solid #555;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.password-wrapper input:focus {
+    border-color: #ffcc00;
+    outline: none;
+    box-shadow: 0 0 6px rgba(255, 204, 0, 0.7);
 }
 
 .toggle-password {
@@ -99,4 +121,5 @@
     font-size: 1.2rem;
     user-select: none;
     outline: none;
+    color: #ffcc00;
 }

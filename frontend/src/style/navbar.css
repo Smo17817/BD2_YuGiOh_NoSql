@@ -1,13 +1,21 @@
+/* Navbar scura */
 .navbar {
-    background-color: #eee;
+    background-color: #1c1c1c; /* stesso colore di sfondo carta/catalogo */
     padding: 1rem 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #2a2a2a;
+    color: #f0e68c; /* giallo pallido per testi */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .navbar-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .navbar-links a,
@@ -15,82 +23,98 @@
 .navbar-user-actions button {
     margin-left: 1.2rem;
     text-decoration: none;
-    color: #333;
-    font-weight: 500;
+    color: #f0f0f0; /* giallo oro per link */
+    font-weight: 600;
     background: none;
     border: none;
     cursor: pointer;
     font-size: 1rem;
-    transition: color 0.2s;
+    transition: color 0.3s, text-shadow 0.3s;
+    border-radius: 6px;
+    padding: 6px 10px;
 }
 
 .navbar-links a:hover,
 .navbar-user-actions a:hover,
 .navbar-user-actions button:hover {
-    color: #007bff;
+    color: #ffd700;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+    background-color: rgba(255, 215, 0, 0.1);
 }
 
 .navbar-user {
-    font-weight: 500;
+    font-weight: 600;
     margin-left: 1.2rem;
+    background-color: #2a2a2a;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-/* Sidebar overlay */
+.navbar-user:hover {
+    background-color: #3d3d3d;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+}
+
+/* Sidebar overlay scuro */
 .sidebar-overlay {
     position: fixed;
     top: 0;
     right: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0,0,0,0.3);
-    z-index: 999;
+    background-color: rgba(28, 28, 28, 0.95);
+    z-index: 9999;
     display: flex;
     justify-content: flex-end;
 }
 
-/* Sidebar panel */
+/* Sidebar panel scura */
 .sidebar {
-    background-color: white;
-    width: 250px;
+    background-color: #2a2a2a;
+    width: 260px;
     height: 100%;
-    padding: 1rem;
+    padding: 1.5rem 1rem;
     display: flex;
     flex-direction: column;
-    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
     animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
+    border-radius: 0 0 0 12px;
 }
 
 .sidebar a,
 .sidebar button {
     text-align: left;
-    padding: 0.75rem 1rem;
+    padding: 0.85rem 1rem;
     border: none;
     background: none;
-    font-size: 1rem;
-    color: #333;
-    font-weight: 500;
+    font-size: 1.1rem;
+    color: #f0f0f0;
+    font-weight: 600;
     text-decoration: none;
     cursor: pointer;
-    transition: background 0.2s;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.2s, box-shadow 0.2s;
 }
 
 .sidebar a:hover,
 .sidebar button:hover {
-    background-color: #f5f5f5;
+    background-color: rgba(255, 215, 0, 0.15);
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
 }
 
-/* Close button */
+/* Close button scuro */
 .close-button {
     align-self: flex-end;
-    font-size: 1.5rem;
+    font-size: 2rem;
     border: none;
     background: none;
     cursor: pointer;
     margin-bottom: 1rem;
-    color: #555;
+    color: #ffd700;
+    transition: color 0.3s;
+}
+
+.close-button:hover {
+    color: #fffacd;
 }

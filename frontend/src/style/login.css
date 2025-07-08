@@ -2,16 +2,16 @@
     max-width: 400px;
     margin: 40px auto;
     padding: 30px;
-    background-color: #f9f9f9;
+    background-color: #1c1c1c; /* sfondo scuro */
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #f0e68c; /* testo giallo pallido */
 }
 
 #login-container h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    color: #ffcc00; /* titolo dorato */
 }
 
 #login-container form {
@@ -23,21 +23,29 @@
 #login-password {
     margin-bottom: 15px;
     padding: 12px 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #555; /* bordo scuro */
     border-radius: 5px;
     font-size: 1rem;
-    transition: border-color 0.3s;
+    background-color: #2a2a2a; /* input scuri */
+    color: #f0e68c; /* testo giallo pallido */
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#login-email::placeholder,
+#login-password::placeholder {
+    color: #999;
 }
 
 #login-email:focus,
 #login-password:focus {
-    border-color: #007bff;
+    border-color: #ffcc00; /* bordo dorato */
     outline: none;
+    box-shadow: 0 0 6px rgba(255, 204, 0, 0.7);
 }
 
 #login-submit {
-    background-color: #007bff;
-    color: white;
+    background-color: #ffcc00; /* bottone dorato */
+    color: #1c1c1c; /* testo scuro */
     padding: 12px 15px;
     font-size: 1.1rem;
     border: none;
@@ -48,13 +56,13 @@
 }
 
 #login-submit:hover {
-    background-color: #0056b3;
+    background-color: #e6b800; /* dorato scuro */
 }
 
 #login-message {
     margin-top: 15px;
     text-align: center;
-    color: #d9534f; /* rosso errori */
+    color: #d9534f; /* rosso errori rimane */
     font-weight: 600;
 }
 
@@ -62,11 +70,11 @@
     margin-top: 20px;
     text-align: center;
     font-size: 14px;
-    color: #555;
+    color: #ccc; /* testo più chiaro */
 }
 
 #signup-link a {
-    color: #007bff;
+    color: #ffcc00; /* link dorato */
     text-decoration: none;
     font-weight: 600;
 }
