@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import '../style/navbar.css';
+import logo from '../images/logo.png'; // percorso relativo da src/pages/navbar.jsx
 
 function Navbar({ user, onLogout }) {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -19,12 +20,13 @@ function Navbar({ user, onLogout }) {
         <>
             <nav className="navbar">
                 <div className="navbar-content">
-                    <div className="navbar-links">
-                        <Link to="/">Home</Link>
-                        <Link to="/catalogo">Catalogo Carte</Link>
+                    <div className="navbar-logo">
+                        <Link to="/"><img src={logo} alt="Logo" /></Link>
                     </div>
 
-                    <div className="navbar-user-actions">
+                    <div className="navbar-right">
+                        <Link to="/">Home</Link>
+                        <Link to="/catalogo">Catalogo Carte</Link>
                         {!user ? (
                             <Link to="/login" className="navbar-button">Login</Link>
                         ) : (

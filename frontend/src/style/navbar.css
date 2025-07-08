@@ -10,6 +10,7 @@
     z-index: 1000;
 }
 
+/* Contenitore principale navbar */
 .navbar-content {
     display: flex;
     justify-content: space-between;
@@ -18,12 +19,31 @@
     margin: 0 auto;
 }
 
-.navbar-links a,
-.navbar-user-actions a,
-.navbar-user-actions button {
-    margin-left: 1.2rem;
+/* Logo a sinistra */
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.navbar-logo img {
+    height: 40px;
+    vertical-align: middle;
+}
+
+/* Raggruppa link e user actions tutti a destra */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-left: auto;
+}
+
+/* Stili link e bottoni */
+.navbar-right a,
+.navbar-right button {
     text-decoration: none;
-    color: #f0f0f0; /* giallo oro per link */
+    color: #f0f0f0;
     font-weight: 600;
     background: none;
     border: none;
@@ -34,19 +54,17 @@
     padding: 6px 10px;
 }
 
-.navbar-links a:hover,
-.navbar-user-actions a:hover,
-.navbar-user-actions button:hover {
+.navbar-right a:hover,
+.navbar-right button:hover {
     color: #ffd700;
     text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
     background-color: rgba(255, 215, 0, 0.1);
 }
 
+/* Pulsante utente */
 .navbar-user {
     font-weight: 600;
-    margin-left: 1.2rem;
     background-color: #2a2a2a;
-    padding: 6px 12px;
     border-radius: 8px;
     transition: background-color 0.3s, box-shadow 0.3s;
 }
