@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import '../style/catalogo.css';
 
 const PER_PAGE = 10;
@@ -9,18 +9,36 @@ function Catalogo() {
     const [carte, setCarte] = useState([]);
     const [filtrate, setFiltrate] = useState([]);
     const [showFilters, setShowFilters] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
 
-    // Filtri
-    const [search, setSearch] = useState('');
-    const [type, setType] = useState('');
-    const [attribute, setAttribute] = useState('');
-    const [level, setLevel] = useState('');
-    const [minAtk, setMinAtk] = useState('');
-    const [maxAtk, setMaxAtk] = useState('');
-    const [minDef, setMinDef] = useState('');
-    const [maxDef, setMaxDef] = useState('');
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    // Leggi i filtri dalla URL
+    const [search, setSearch] = useState(searchParams.get("search") || '');
+    const [type, setType] = useState(searchParams.get("type") || '');
+    const [attribute, setAttribute] = useState(searchParams.get("attribute") || '');
+    const [level, setLevel] = useState(searchParams.get("level") || '');
+    const [minAtk, setMinAtk] = useState(searchParams.get("minAtk") || '');
+    const [maxAtk, setMaxAtk] = useState(searchParams.get("maxAtk") || '');
+    const [minDef, setMinDef] = useState(searchParams.get("minDef") || '');
+    const [maxDef, setMaxDef] = useState(searchParams.get("maxDef") || '');
+    const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get("page")) || 1);
+
+    // Aggiorna la query string ogni volta che filtri o pagina cambiano
+    useEffect(() => {
+        const params = {};
+        if (search) params.search = search;
+        if (type) params.type = type;
+        if (attribute) params.attribute = attribute;
+        if (level) params.level = level;
+        if (minAtk) params.minAtk = minAtk;
+        if (maxAtk) params.maxAtk = maxAtk;
+        if (minDef) params.minDef = minDef;
+        if (maxDef) params.maxDef = maxDef;
+        if (currentPage > 1) params.page = currentPage;
+
+        setSearchParams(params);
+    }, [search, type, attribute, level, minAtk, maxAtk, minDef, maxDef, currentPage, setSearchParams]);
 
     useEffect(() => {
         setLoading(true);
@@ -50,7 +68,7 @@ function Catalogo() {
             return nameMatch && typeMatch && attrMatch && levelMatch && atkMatch && defMatch;
         });
         setFiltrate(f);
-        setCurrentPage(1);
+        setCurrentPage(parseInt(searchParams.get("page")) || 1);
     }, [search, type, attribute, level, minAtk, maxAtk, minDef, maxDef, carte]);
 
     const uniqueTypes = [...new Set(carte.map(c => c.type).filter(Boolean))];
@@ -80,13 +98,13 @@ function Catalogo() {
         setMaxAtk('');
         setMinDef('');
         setMaxDef('');
+        setCurrentPage(1);
     };
 
     return (
         <div className="catalogo-container">
             <h1>Catalogo Carte</h1>
 
-            {/* FILTRI */}
             <button className="toggle-filters-btn" onClick={() => setShowFilters(!showFilters)}>
                 {showFilters ? 'Nascondi Filtri ▲' : 'Mostra Filtri ▼'}
             </button>
@@ -124,10 +142,13 @@ function Catalogo() {
 
             {loading ? <p>Caricamento...</p> : (
                 <>
-                    {/* CARDS */}
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                         {paginated.map(c => (
-                            <Link key={c._id} to={`/carta/${c._id}`} className="card-link">
+                            <Link
+                                key={c._id}
+                                to={`/carta/${c._id}?${searchParams.toString()}`}
+                                className="card-link"
+                            >
                                 <div className="card">
                                     <h3>{c.name}</h3>
                                     {c.image_url && <img src={c.image_url} alt={c.name} />}
@@ -141,7 +162,6 @@ function Catalogo() {
                         ))}
                     </div>
 
-                    {/* PAGINATOR */}
                     <div className="pagination">
                         <button className="page-btn" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>←</button>
                         {pages.map(p => (
@@ -154,8 +174,6 @@ function Catalogo() {
                             </button>
                         ))}
                         <button className="page-btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>→</button>
-
-                        {/* Go To Page */}
                         <span style={{ marginLeft: '10px' }}>Vai alla pagina:</span>
                         <input type="number" min={1} max={totalPages} onChange={handlePageInput} style={{ width: '60px' }} />
                     </div>

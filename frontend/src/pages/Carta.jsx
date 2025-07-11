@@ -1,9 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation, Link } from 'react-router-dom';
 import '../style/carta.css';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
+
+
 
 function Carta({ user }) {
+    const navigate = useNavigate();
     const { id } = useParams();
+    const location = useLocation();
     const [carta, setCarta] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isPreferita, setIsPreferita] = useState(false);
@@ -11,8 +17,9 @@ function Carta({ user }) {
     const [errorPreferiti, setErrorPreferiti] = useState(null);
 
     const userEmail = user?.email || null;
-
     const imageRef = useRef(null);
+
+    const queryString = location.search || '';
 
     function handleMouseMove(e) {
         const card = imageRef.current;
@@ -23,11 +30,8 @@ function Carta({ user }) {
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
 
-        // Oscillazione aumentata
         const rotateX = -(y - centerY) / 5; 
         const rotateY = (x - centerX) / 5;
-
-        // Ombra dinamica che segue il mouse
         const shadowX = -(x - centerX) / 10;
         const shadowY = -(y - centerY) / 10;
 
@@ -55,7 +59,6 @@ function Carta({ user }) {
             });
     }, [id]);
 
-    // Carica preferiti solo se loggato
     useEffect(() => {
         if (!userEmail) {
             setIsPreferita(false);
@@ -114,6 +117,20 @@ function Carta({ user }) {
 
     return (
         <div className="carta-container">
+            {/* FRECCIA INDIETRO */}
+           <button
+  onClick={() => navigate(-1)}
+  className="back-arrow"
+  title="Torna alla pagina precedente"
+>
+  <ArrowLeft size={24} />
+</button>
+
+
+
+
+
+
             <h1>{carta.name}</h1>
             <div className="carta-content">
                 {carta.image_url && (

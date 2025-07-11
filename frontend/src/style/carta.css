@@ -120,4 +120,23 @@
         padding-right: 0;
     }
 }
+.back-arrow {
+  position: relative;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.back-arrow:hover {
+  background-color: white;
+  color: black;
+}
+
+
 
