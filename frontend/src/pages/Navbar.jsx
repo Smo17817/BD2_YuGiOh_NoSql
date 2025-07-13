@@ -28,7 +28,7 @@ function Navbar({ user, onLogout }) {
                         <Link to="/">Home</Link>
                         <Link to="/catalogo">Catalogo Carte</Link>
                         {!user ? (
-                            <Link to="/login" className="navbar-button">Login</Link>
+                            <Link to="/login" className="navbar-button">Login/Signup</Link>
                         ) : (
                             <button className="navbar-user" onClick={toggleSidebar}>
                                 Ciao, {user?.nome || 'Utente'} ☰

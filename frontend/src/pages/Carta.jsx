@@ -4,8 +4,6 @@ import '../style/carta.css';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
-
-
 function Carta({ user }) {
     const navigate = useNavigate();
     const { id } = useParams();

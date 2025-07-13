@@ -42,13 +42,13 @@ function App() {
       <Navbar user={user} onLogout={handleLogout} />
       <div style={{ minHeight: '80vh', padding: '1rem' }}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home user={user} />} />
           <Route path="/catalogo" element={<Catalogo />} />
           <Route path="/carta/:id" element={<Carta user={user} />} />
-          <Route path="/login" element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/" />} /> 
+          <Route path="/login" element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/" />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/profilo" element={user ? <Profilo user={user} onUpdate={setUser} /> : <Navigate to="/login" />} />
-          <Route path="/preferiti" element={user ? <Preferiti user={user} /> : <Navigate to="/login" />} />       
+          <Route path="/preferiti" element={user ? <Preferiti user={user} /> : <Navigate to="/login" />} />
         </Routes>
       </div>
       <Footer />

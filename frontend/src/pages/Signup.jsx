@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../style/signup.css';
 
 function Signup() {
@@ -10,6 +10,7 @@ function Signup() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     const validatePassword = (pw) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(pw);
 
@@ -24,21 +25,24 @@ function Signup() {
         return;
         }
         try {
-        const res = await fetch('http://127.0.0.1:5000/signup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, email, password }),
-        });
-        const data = await res.json();
-        if (res.ok) {
-            setMessage('Registrazione avvenuta con successo!');
-            setNome('');
-            setEmail('');
-            setPassword('');
-            setConfirmPassword('');
-        } else {
-            setMessage(data.error || 'Errore nella registrazione');
-        }
+            const res = await fetch('http://127.0.0.1:5000/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, email, password }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setMessage('Registrazione avvenuta con successo!');
+                setNome('');
+                setEmail('');
+                setPassword('');
+                setConfirmPassword('');
+                setTimeout(() => {
+                    navigate('/login');
+                }, 1500);
+            } else {
+                setMessage(data.error || 'Errore nella registrazione');
+            }
         } catch {
         setMessage('Errore di rete');
         }

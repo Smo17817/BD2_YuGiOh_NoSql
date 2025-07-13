@@ -6,7 +6,7 @@ import slide1 from '../images/whiteDragon.png';
 import slide2 from '../images/cards.png';
 import slide3 from '../images/yugi.png';
 
-function Home() {
+function Home({ user }) {
     const [carte, setCarte] = useState([]);
     const [slideIndex, setSlideIndex] = useState(0);
     const [animate, setAnimate] = useState(false);
@@ -31,6 +31,8 @@ function Home() {
         return () => clearTimeout(timeout);
     }, [slideIndex]);
 
+    const isLoggedIn = user && Object.keys(user).length > 0;
+
     const slides = [
         {
             title: "Benvenuto in Yu-Gi-Oh! Catalog",
@@ -49,7 +51,7 @@ function Home() {
             title: "Unisciti alla Lega dei Duellisti!",
             description: "Crea un account per salvare le tue carte preferite.",
             image: slide3,
-            link: "/register",
+            link: isLoggedIn? "/profilo" : "/signup",
             background: "linear-gradient(135deg, rgba(20,20,20,0.8) 0%, rgba(110,80,40,0.8) 100%)"
         }
     ];
