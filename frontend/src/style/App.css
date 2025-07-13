@@ -28,3 +28,11 @@ ul {
   margin: 0 auto;
   padding: 2rem 0;
 }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: url('../images/bg2.jpg');
+  background-size: 100%;
+  color: #f0f0f0;
+  line-height: 1.6;
+}

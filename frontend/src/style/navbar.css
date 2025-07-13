@@ -1,6 +1,6 @@
 /* Navbar scura */
 .navbar {
-    background-color: #1c1c1c; /* stesso colore di sfondo carta/catalogo */
+    background-color: rgba(28, 28, 28, 0.85); /* stesso colore di sfondo carta/catalogo */
     padding: 1rem 2rem;
     border-bottom: 1px solid #2a2a2a;
     color: #f0e68c; /* giallo pallido per testi */
@@ -15,8 +15,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1000px;
-    margin: 0 auto;
+    width: 100%; /* usa tutto lo spazio */
+    padding: 0 1rem; /* padding orizzontale per respirare */
 }
 
 /* Logo a sinistra */
@@ -27,7 +27,7 @@
 }
 
 .navbar-logo img {
-    height: 40px;
+    height: 60px;
     vertical-align: middle;
 }
 
