@@ -36,18 +36,21 @@ function Home() {
             title: "Benvenuto in Yu-Gi-Oh! Catalog",
             description: "Evoca i tuoi mostri, lancia magie e combatti in duelli epici.",
             image: slide1,
+            background: "linear-gradient(135deg, rgba(20,20,20,0.8) 0%, rgba(60,50,10,0.8) 100%)"
         },
         {
             title: "Esplora il nostro Catalogo",
             description: "Scopri centinaia di carte leggendarie pronte per il tuo deck.",
             image: slide2,
-            link: "/catalogo"
+            link: "/catalogo",
+            background: "linear-gradient(135deg, rgba(10,10,30,0.8) 0%, rgba(50,10,30,0.8) 100%)"
         },
         {
-            title: "Diventa un Campione dei Duelli!",
+            title: "Unisciti alla Lega dei Duellisti!",
             description: "Crea un account per salvare le tue carte preferite.",
             image: slide3,
-            link: "/register"
+            link: "/register",
+            background: "linear-gradient(135deg, rgba(20,20,20,0.8) 0%, rgba(110,80,40,0.8) 100%)"
         }
     ];
 
@@ -57,7 +60,7 @@ function Home() {
     return (
         <div className="home-wrapper">
             {/* Carosello Intro */}
-            <div className="intro-carousel">
+            <div className="intro-carousel" style={{ background: slides[slideIndex].background }}>
                 <button className="carousel-btn left" onClick={prevSlide}>&lt;</button>
 
                 <div className="slide">
