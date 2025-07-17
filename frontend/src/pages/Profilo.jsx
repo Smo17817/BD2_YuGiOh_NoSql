@@ -30,8 +30,8 @@ function Profilo({ user, onUpdate }) {
                 setMessage('Le nuove password non corrispondono.');
                 return;
             }
-            if (formData.newPassword.length < 8) {
-                setMessage('La nuova password deve essere lunga almeno 8 caratteri.');
+            if (formData.newPassword.length < 6) {
+                setMessage('La nuova password deve essere lunga almeno 6 caratteri.');
                 return;
             }
             if (!formData.oldPassword) {
