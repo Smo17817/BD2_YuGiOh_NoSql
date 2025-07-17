@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import '../style/catalogo.css';
 
-const PER_PAGE = 10;
+const PER_PAGE = 20;
 const PAGE_GROUP_SIZE = 5;
 
 function Catalogo() {
