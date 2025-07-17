@@ -38,6 +38,7 @@ Questo progetto è una semplice applicazione React per visualizzare un catalogo 
 - `backend/`: contiene il codice del server Flask, le API REST per gestire le carte, gli utenti e i preferiti, e la logica di comunicazione con il database MongoDB.
 - `dataset/`: include i file di dati originali delle carte, utilizzati per popolare e aggiornare il database MongoDB.
 - `frontend/`: contiene il codice React per l’interfaccia utente, con tutte le pagine, i componenti, il routing e gli stili CSS personalizzati.
+- `semilavorati/`: contiene la documentazione e la presentazione del progetto.
 
 ## ⚙️ Come configurare e avviare il progetto
 
@@ -64,7 +65,11 @@ Questo progetto è una semplice applicazione React per visualizzare un catalogo 
    pip install -r requirements.txt
    ```
 4. Configurare la connessione a MongoDB (creare il file di configurazione `.env`).
-5. Avviare il server Flask:
+5. Eseguire il file `import_cards.py` per popolare il database:
+   ```bash
+   python import_cards.py
+   ```
+7. Avviare il server Flask:
    ```bash
    flask run
    ```
@@ -74,11 +79,11 @@ Questo progetto è una semplice applicazione React per visualizzare un catalogo 
    ```bash
    cd frontend
    ```
-2. Installare le dipendenze npm::
+2. Installare le dipendenze npm:
    ```bash
    npm install
    ```
-3. Avviare l'app React in modalità sviluppo::
+3. Avviare l'app React in modalità sviluppo:
    ```bash
    npm start
    ```
