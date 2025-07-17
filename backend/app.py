@@ -58,35 +58,6 @@ def get_carta_by_id(id):
     carta = clean_nan(carta)
     return jsonify(carta)
 
-@app.route("/collezionisti", methods=["POST"])
-def crea_collezionista():
-    d = request.json
-    res = mongo.db.collezionisti.insert_one({"nome": d["nome"], "email": d["email"], "carte_possedute": []})
-    return jsonify({"_id": str(res.inserted_id)}), 201
-
-@app.route("/collezionisti/<id>/carte", methods=["PUT"])
-def aggiungi_carta(id):
-    carta = request.json["id_carta"]
-    mongo.db.collezionisti.update_one({"_id": ObjectId(id)}, {"$push": {"carte_possedute": ObjectId(carta)}})
-    return "", 204
-
-@app.route("/collezionisti/<id>", methods=["GET"])
-def get_collezionista(id):
-    agg = mongo.db.collezionisti.aggregate([
-        {"$match": {"_id": ObjectId(id)}},
-        {"$lookup": {
-            "from": "carte",
-            "localField": "carte_possedute",
-            "foreignField": "_id",
-            "as": "dettagli_carte"
-        }}
-    ])
-    col = next(agg, None)
-    if col is None:
-        return jsonify({"error": "Collezionista non trovato"}), 404
-    col["_id"] = str(col["_id"])
-    return jsonify(col)
-
 @app.route("/")
 def home():
     return "Backend Yugioh attivo!"
@@ -115,7 +86,7 @@ def signup():
         "nome": nome,
         "email": email,
         "password": pw_hash,
-        "preferiti": []  # campo aggiunto per i preferiti
+        "preferiti": []  # campo per le carte preferite
     })
     return jsonify({"message": "Utente registrato con successo"}), 201
 
@@ -130,7 +101,10 @@ def login():
 
     user = mongo.db.users.find_one({"email": email})
     if user and bcrypt.check_password_hash(user["password"], password):
-        return jsonify({"message": "Login effettuato", "user": {"nome": user["nome"], "email": user["email"]}}), 200
+        return jsonify({
+            "message": "Login effettuato",
+            "user": {"nome": user["nome"], "email": user["email"]}
+        }), 200
     return jsonify({"error": "Credenziali non valide"}), 401
 
 @app.route("/utente/<email>", methods=["PUT"])
@@ -168,15 +142,12 @@ def update_utente(email):
 
 @app.route("/preferiti/<email>", methods=["GET"])
 def get_preferiti(email):
-    print(f"Email ricevuta (raw): {email}")
     user = mongo.db.users.find_one({"email": email})
     if not user:
-        print("Utente non trovato")
         return jsonify({"error": "Utente non trovato"}), 404
     preferiti = user.get("preferiti", [])
     preferiti = [str(p) for p in preferiti]
     return jsonify({"preferiti": preferiti})
-
 
 @app.route("/preferiti/<email>", methods=["POST"])
 def aggiungi_preferito(email):
@@ -187,7 +158,7 @@ def aggiungi_preferito(email):
 
     mongo.db.users.update_one(
         {"email": email},
-        {"$addToSet": {"preferiti": ObjectId(id_carta)}}  # $addToSet evita duplicati
+        {"$addToSet": {"preferiti": ObjectId(id_carta)}}
     )
     return jsonify({"message": "Carta aggiunta ai preferiti"}), 200
 
@@ -203,6 +174,18 @@ def rimuovi_preferito(email):
         {"$pull": {"preferiti": ObjectId(id_carta)}}
     )
     return jsonify({"message": "Carta rimossa dai preferiti"}), 200
+
+# JOIN: Recupera i dettagli delle carte preferite di un utente
+@app.route("/preferiti/dettagli/<email>", methods=["GET"])
+def get_preferiti_con_dettagli(email):
+    user = mongo.db.users.find_one({"email": email})
+    if not user:
+        return jsonify({"error": "Utente non trovato"}), 404
+
+    ids = user.get("preferiti", [])
+    carte = list(mongo.db.carte.find({"_id": {"$in": ids}}))
+    carte = [{**c, "_id": str(c["_id"])} for c in carte]
+    return jsonify(carte)
 
 if __name__ == "__main__":
     app.run(debug=True)

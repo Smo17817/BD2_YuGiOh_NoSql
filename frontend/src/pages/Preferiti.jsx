@@ -9,41 +9,28 @@ function Preferiti({ user }) {
 
     useEffect(() => {
         if (!user?.email) {
-        setPreferitiIds([]);
-        setCarte([]);
-        setLoading(false);
-        return;
+            setCarte([]);
+            setLoading(false);
+            return;
         }
 
         setLoading(true);
-        fetch(`http://localhost:5000/preferiti/${encodeURIComponent(user.email)}`)
-        .then(res => {
-            if (!res.ok) throw new Error('Errore nel fetch preferiti');
+        fetch(`http://localhost:5000/preferiti/dettagli/${encodeURIComponent(user.email)}`)
+            .then(res => {
+            if (!res.ok) throw new Error("Errore nel fetch dei preferiti con dettagli");
             return res.json();
-        })
-        .then(data => {
-            const ids = data.preferiti || [];
-            setPreferitiIds(ids);
-
-            // Fetch dettagli carte preferite
-            return Promise.all(
-            ids.map(id =>
-                fetch(`http://127.0.0.1:5000/carta/${id}`)
-                .then(res => res.ok ? res.json() : null)
-                .catch(() => null)
-            )
-            );
-        })
-        .then(carteData => {
-            // Filtra carte valide (non null)
-            setCarte(carteData.filter(c => c));
+            })
+            .then(data => {
+            setCarte(data || []);
             setLoading(false);
-        })
-        .catch(err => {
+            })
+            .catch(err => {
             console.error(err);
             setLoading(false);
-        });
+            }
+        );
     }, [user]);
+
 
     if (!user?.email) {
         return <p>Devi effettuare il login per vedere i preferiti.</p>;
