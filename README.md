@@ -1,4 +1,4 @@
-# Yu-Gi-Oh Database 🃏 
+# Yu-Gi-Oh! Catalog 🃏 
 
 Questo progetto è una semplice applicazione React per visualizzare un catalogo di carte, con funzionalità di filtro, visualizzazione dettagliata e gestione dei preferiti per utenti loggati.
 
