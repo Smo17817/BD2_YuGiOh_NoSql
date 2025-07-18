@@ -184,8 +184,13 @@ def get_preferiti_con_dettagli(email):
 
     ids = user.get("preferiti", [])
     carte = list(mongo.db.carte.find({"_id": {"$in": ids}}))
-    carte = [{**c, "_id": str(c["_id"])} for c in carte]
-    return jsonify(carte)
+
+    # Applichiamo clean_nan + conversione _id
+    carte_sanificate = [
+        clean_nan({**c, "_id": str(c["_id"])}) for c in carte
+    ]
+
+    return jsonify(carte_sanificate)
 
 if __name__ == "__main__":
     app.run(debug=True)
